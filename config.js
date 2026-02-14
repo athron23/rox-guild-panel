@@ -1,3 +1,7 @@
+// 🔗 Google Sheet CSV
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSX3TECUPYpRg1VqI-Sl20a0LE8H1rKlDeHpTgVd_6bs3Be2ziYj6-tDVjgtLzi0w/pub?output=csv";
+
+// 🔥 Firebase config
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -20,3 +24,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+// 🔐 รหัสหัวกิลด์
+const ADMIN_PASS = "11223344";
