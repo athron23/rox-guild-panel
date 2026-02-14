@@ -4,24 +4,38 @@
 <meta charset="utf-8">
 <title>ROX Guild Panel</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Firebase v8 -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+<!-- ===== TOP BAR ===== -->
 <div class="topbar">
   <h1>CORGI GUILD PANEL</h1>
-  <input type="password" id="pass" placeholder="หัวกิลด์">
-  <button onclick="login()">Login</button>
+
+  <div class="loginbox">
+    <input type="password" id="pass" placeholder="หัวกิลด์">
+    <button onclick="login()">Login</button>
+  </div>
 </div>
 
+<!-- ===== MAIN ===== -->
 <div class="container">
 
+  <!-- ===== POOL ===== -->
   <div class="pool" id="pool">
-    <h2>POOL</h2>
 
+    <div class="poolHeader">
+      <h2>POOL</h2>
+    </div>
+
+    <!-- เพิ่มตัวละคร -->
     <div class="addbox">
       <h3>เพิ่มตัวละคร</h3>
 
@@ -52,7 +66,9 @@
 
   </div>
 
+  <!-- ===== RAIDS ===== -->
   <div class="raids">
+
     <div class="raid" id="raid1"><h2>RAID 1</h2></div>
     <div class="raid" id="raid2"><h2>RAID 2</h2></div>
     <div class="raid" id="raid3"><h2>RAID 3</h2></div>
@@ -60,11 +76,14 @@
     <div class="raid" id="raid5"><h2>RAID 5</h2></div>
     <div class="raid" id="raid6"><h2>RAID 6</h2></div>
     <div class="raid" id="raid7"><h2>RAID 7</h2></div>
+
   </div>
 
 </div>
 
+<!-- ===== JS ===== -->
 <script src="config.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
