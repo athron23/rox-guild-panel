@@ -1,1 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ROX Guild Panel</title>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Guild Panel</h1>
+
+<input type="password" id="pass" placeholder="หัวกิลด์ใส่รหัส">
+<button onclick="login()">Login</button>
+
+<div id="pool" class="box"></div>
+
+<div class="raid box" id="raid1">RAID 1</div>
+<div class="raid box" id="raid2">RAID 2</div>
+<div class="raid box" id="raid3">RAID 3</div>
+<div class="raid box" id="raid4">RAID 4</div>
+
+<button onclick="save()">SAVE</button>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
