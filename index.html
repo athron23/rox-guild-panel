@@ -11,19 +11,27 @@
 </head>
 <body>
 
-<h1>Guild Panel</h1>
+<div class="topbar">
+  <h1>CORGI GUILD PANEL</h1>
+  <input type="password" id="pass" placeholder="หัวกิลด์">
+  <button onclick="login()">Login</button>
+</div>
 
-<input type="password" id="pass" placeholder="หัวกิลด์ใส่รหัส">
-<button onclick="login()">Login</button>
+<div class="container">
 
-<div id="pool" class="box"></div>
+  <div class="pool" id="pool">
+    <h2>POOL</h2>
+  </div>
 
-<div class="raid box" id="raid1">RAID 1</div>
-<div class="raid box" id="raid2">RAID 2</div>
-<div class="raid box" id="raid3">RAID 3</div>
-<div class="raid box" id="raid4">RAID 4</div>
+  <div class="raids">
+    <div class="raid" id="raid1"><h2>RAID 1</h2></div>
+    <div class="raid" id="raid2"><h2>RAID 2</h2></div>
+    <div class="raid" id="raid3"><h2>RAID 3</h2></div>
+    <div class="raid" id="raid4"><h2>RAID 4</h2></div>
+    <div class="raid" id="raid5"><h2>RAID 5</h2></div>
+  </div>
 
-<button onclick="save()">SAVE</button>
+</div>
 
 <script src="config.js"></script>
 <script src="app.js"></script>
