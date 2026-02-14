@@ -26,4 +26,4 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 // 🔐 รหัสหัวกิลด์
-const ADMIN_PASS = "11223344";
+const ADMIN_PASS = "1234";
