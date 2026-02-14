@@ -1,3 +1,5 @@
+const GAS_URL="https://script.google.com/macros/s/AKfycbxz5pPwMzeOkoz9O_v607AZFniRdd4Y9-USE3BpvkAbsxq2rAGAJ5aSXEv6q3mBtW4/exec";
+
 let isAdmin=false;
 
 function login(){
@@ -7,7 +9,9 @@ function login(){
  }
 }
 
-// โหลดจาก sheet
+// =====================
+// โหลดจาก Google Sheet
+// =====================
 fetch(SHEET_CSV)
 .then(r=>r.text())
 .then(csv=>{
@@ -26,6 +30,38 @@ fetch(SHEET_CSV)
  enableDrag();
 });
 
+// =====================
+// เพิ่มตัวละคร + ส่ง sheet
+// =====================
+function addChar(){
+
+ if(!isAdmin){
+  alert("หัวกิลด์เท่านั้น");
+  return;
+ }
+
+ let name=document.getElementById("charName").value.trim();
+ let job=document.getElementById("charJob").value;
+
+ if(!name) return;
+
+ createChar(name,job,"pool");
+
+ // 🔥 ส่งไป Google Sheet
+ fetch(GAS_URL,{
+  method:"POST",
+  body:JSON.stringify({
+   name:name,
+   job:job
+  })
+ });
+
+ document.getElementById("charName").value="";
+}
+
+// =====================
+// สร้างตัวละครในหน้า
+// =====================
 function createChar(name,job,where){
 
  let d=document.createElement("div");
@@ -46,14 +82,21 @@ function createChar(name,job,where){
  document.getElementById(where).appendChild(d);
 }
 
-// drag
+// =====================
+// drag & drop
+// =====================
 function enableDrag(){
 
  document.addEventListener("dragstart",e=>{
   if(!isAdmin) return e.preventDefault();
 
+  if(!e.target.classList.contains("char")) return;
+
   e.dataTransfer.setData("name",e.target.dataset.name);
   e.dataTransfer.setData("job",e.target.dataset.job);
+
+  // ลบตัวเก่า
+  e.target.remove();
  });
 
  document.querySelectorAll(".raid,.pool").forEach(box=>{
@@ -80,7 +123,9 @@ function enableDrag(){
  });
 }
 
-// realtime sync
+// =====================
+// realtime save firebase
+// =====================
 function syncRealtime(){
 
  let data={};
@@ -99,7 +144,9 @@ function syncRealtime(){
  db.ref("raid").set(data);
 }
 
-// realtime listen
+// =====================
+// realtime load
+// =====================
 db.ref("raid").on("value",snap=>{
 
  if(!snap.val()) return;
