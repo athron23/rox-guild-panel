@@ -1,60 +1,80 @@
 let isAdmin=false;
 
 function login(){
- let p=document.getElementById("pass").value;
- if(p===ADMIN_PASS){
+ if(document.getElementById("pass").value===ADMIN_PASS){
   isAdmin=true;
-  alert("หัวกิลด์ login แล้ว");
+  alert("หัวกิลด์เข้าแล้ว");
  }
 }
 
-// โหลดจาก Google Sheet
+// โหลดจาก sheet
 fetch(SHEET_CSV)
 .then(r=>r.text())
 .then(csv=>{
  let rows=csv.split("\n").slice(1);
 
  rows.forEach(r=>{
-  let name=r.split(",")[0];
+  let col=r.split(",");
+  let name=col[0];
+  let job=col[1];
+
   if(!name) return;
 
-  let div=document.createElement("div");
-  div.className="char";
-  div.draggable=true;
-  div.innerText=name;
-  document.getElementById("pool").appendChild(div);
+  createChar(name,job,"pool");
  });
 
  enableDrag();
 });
+
+function createChar(name,job,where){
+
+ let d=document.createElement("div");
+ d.className="char";
+ d.draggable=true;
+ d.dataset.name=name;
+ d.dataset.job=job;
+
+ let img=document.createElement("img");
+ img.src="icons/"+job+".png";
+
+ let span=document.createElement("span");
+ span.innerText=name;
+
+ d.appendChild(img);
+ d.appendChild(span);
+
+ document.getElementById(where).appendChild(d);
+}
 
 // drag
 function enableDrag(){
 
  document.addEventListener("dragstart",e=>{
   if(!isAdmin) return e.preventDefault();
-  e.dataTransfer.setData("text",e.target.innerText);
+
+  e.dataTransfer.setData("name",e.target.dataset.name);
+  e.dataTransfer.setData("job",e.target.dataset.job);
  });
 
- document.querySelectorAll(".raid").forEach(r=>{
-  r.ondragover=e=>e.preventDefault();
+ document.querySelectorAll(".raid,.pool").forEach(box=>{
+  box.ondragover=e=>e.preventDefault();
 
-  r.ondrop=e=>{
+  box.ondrop=e=>{
    if(!isAdmin) return;
+
    e.preventDefault();
 
-   let name=e.dataTransfer.getData("text");
+   let name=e.dataTransfer.getData("name");
+   let job=e.dataTransfer.getData("job");
 
-   if(r.querySelectorAll(".char").length>=15){
-    alert("เต็ม 15");
-    return;
+   if(box.classList.contains("raid")){
+    if(box.querySelectorAll(".char").length>=15){
+      alert("เต็ม 15");
+      return;
+    }
    }
 
-   let d=document.createElement("div");
-   d.className="char";
-   d.innerText=name;
-   r.appendChild(d);
-
+   createChar(name,job,box.id);
    syncRealtime();
   };
  });
@@ -62,12 +82,17 @@ function enableDrag(){
 
 // realtime sync
 function syncRealtime(){
+
  let data={};
 
  document.querySelectorAll(".raid").forEach(r=>{
   data[r.id]=[];
+
   r.querySelectorAll(".char").forEach(c=>{
-   data[r.id].push(c.innerText);
+   data[r.id].push({
+    name:c.dataset.name,
+    job:c.dataset.job
+   });
   });
  });
 
@@ -76,23 +101,18 @@ function syncRealtime(){
 
 // realtime listen
 db.ref("raid").on("value",snap=>{
+
  if(!snap.val()) return;
 
  let data=snap.val();
 
- for(let raid in data){
-  let box=document.getElementById(raid);
-  box.innerHTML=raid.toUpperCase();
+ document.querySelectorAll(".raid").forEach(r=>{
+  r.innerHTML="<h2>"+r.id.toUpperCase()+"</h2>";
+ });
 
-  data[raid].forEach(n=>{
-   let d=document.createElement("div");
-   d.className="char";
-   d.innerText=n;
-   box.appendChild(d);
+ for(let raid in data){
+  data[raid].forEach(c=>{
+   createChar(c.name,c.job,raid);
   });
  }
 });
-
-function save(){
- alert("ถ้าจะ save กลับ Google Sheet เดี๋ยวผมต่อ webhook ให้ขั้นต่อไป");
-}
